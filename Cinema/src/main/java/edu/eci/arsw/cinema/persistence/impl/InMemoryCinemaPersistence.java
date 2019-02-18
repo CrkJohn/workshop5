@@ -15,11 +15,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+import org.springframework.stereotype.Component;
+
 
 /**
  *
  * @author cristian
  */
+
+
+@Component("inMemoryCinemaPersistence")
 public class InMemoryCinemaPersistence implements CinemaPersitence{
     
     private final Map<String,Cinema> cinemas=new HashMap<>();
@@ -81,4 +88,14 @@ public class InMemoryCinemaPersistence implements CinemaPersitence{
         return cinemas.get(name);
     }
 
+ 
+    @Override
+    public Set<Cinema> getAllCinemas() {
+        Set<Cinema> cinemasAll = new TreeSet<Cinema>(); 
+        for (Map.Entry<String, Cinema> entry : cinemas.entrySet()) {
+            cinemasAll.add(entry.getValue());
+        }
+        return cinemasAll;  
+    }
+    
 }
