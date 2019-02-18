@@ -38,12 +38,29 @@ public class InMemoryCinemaPersistence implements CinemaPersitence{
 
     @Override
     public void buyTicket(int row, int col, String cinema, String date, String movieName) throws CinemaException {
-        throw new UnsupportedOperationException("Not supported yet."); 
+        if(cinemas.containsKey(cinema)){
+            Cinema cine = cinemas.get(cinema);
+            for(CinemaFunction cf: cine.getFunctions()){
+                if(cf.getMovie().getName().equals(movieName) && cf.getDate().equals(date)){
+                    cf.buyTicket(row,col);
+                }
+            }
+        }
     }
 
     @Override
     public List<CinemaFunction> getFunctionsbyCinemaAndDate(String cinema, String date) {
-        throw new UnsupportedOperationException("Not supported yet."); 
+        List<CinemaFunction> functions = new ArrayList<CinemaFunction>();
+        if(cinemas.containsKey(cinema)){
+            Cinema cine = cinemas.get(cinema);
+            for(CinemaFunction cf: cine.getFunctions()){
+                if(cf.getDate().equals(date)){
+                    functions.add(cf);
+                    //System.out.println(date);
+                }
+            }
+        }
+        return functions;
     }
 
     @Override
@@ -58,6 +75,9 @@ public class InMemoryCinemaPersistence implements CinemaPersitence{
 
     @Override
     public Cinema getCinema(String name) throws CinemaPersistenceException {
+    	if(!cinemas.containsKey(name)) {
+    		throw new CinemaPersistenceException("The cinema doesn't exists :"+name);
+    	}
         return cinemas.get(name);
     }
 

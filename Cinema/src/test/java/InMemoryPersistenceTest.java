@@ -2,6 +2,7 @@
 import edu.eci.arsw.cinema.model.Cinema;
 import edu.eci.arsw.cinema.model.CinemaFunction;
 import edu.eci.arsw.cinema.model.Movie;
+import edu.eci.arsw.cinema.persistence.CinemaException;
 import edu.eci.arsw.cinema.persistence.CinemaPersistenceException;
 import edu.eci.arsw.cinema.persistence.impl.InMemoryCinemaPersistence;
 import java.util.ArrayList;
@@ -70,9 +71,103 @@ public class InMemoryPersistenceTest {
             fail("An exception was expected after saving a second cinema with the same name");
         }
         catch (CinemaPersistenceException ex){
-            
         }
-                
+  
+    }
+    
+    @Test
+    public void getFunctionsbyCinemaAndDateTest(){
+    	InMemoryCinemaPersistence ipct=new InMemoryCinemaPersistence();
+    	
+    	String functionDate = "2019-02-18 16:45";
+        List<CinemaFunction> functions= new ArrayList<>();
+        CinemaFunction funct1 = new CinemaFunction(new Movie("Inception","Action"),functionDate);
+        CinemaFunction funct2 = new CinemaFunction(new Movie("Anabelle","Terror"),functionDate);
+        
+        String functionDate2 = "2019-02-17 14:00";
+        CinemaFunction funct3 = new CinemaFunction(new Movie("JohnCena","Terror"),functionDate2);
+        
+        functions.add(funct1);
+        functions.add(funct2);
+        functions.add(funct3);
+        Cinema c=new Cinema("CineColombia",functions);
+        
+        try{
+            ipct.saveCinema(c);
+        }
+        catch (CinemaPersistenceException ex){
+        	 fail("Cinema persistence failed inserting the first cinema.");
+        }
+        
+        List<CinemaFunction> cinemaFunctions = ipct.getFunctionsbyCinemaAndDate("CineColombia", "2019-02-18 16:45");
+        
+        assertEquals(cinemaFunctions.size(),2);
+        assertEquals("Inception", cinemaFunctions.get(0).getMovie().getName());
+        assertEquals("Anabelle",cinemaFunctions.get(1).getMovie().getName());
+        
+        List<CinemaFunction> cinemaFunctions2 = ipct.getFunctionsbyCinemaAndDate("CineColombia", "2019-02-17 14:00");
+        
+        assertEquals(cinemaFunctions2.size(),1);
+        assertEquals("JohnCena", cinemaFunctions2.get(0).getMovie().getName());
+    }
+    
+    @Test
+    public void buyTicketTest(){
+    	InMemoryCinemaPersistence ipct=new InMemoryCinemaPersistence();
+        
+        String functionDate = "2018-12-18 15:45";
+        List<CinemaFunction> functions= new ArrayList<>();
+        CinemaFunction funct1 = new CinemaFunction(new Movie("Inception","Action"),functionDate);
+        CinemaFunction funct2 = new CinemaFunction(new Movie("Anabelle","Terror"),functionDate);
+        functions.add(funct1);
+        functions.add(funct2);
+        Cinema c=new Cinema("CineColombia",functions);
+        
+        try {
+            ipct.saveCinema(c);
+        } catch (CinemaPersistenceException ex) {
+            fail("Cinema persistence failed inserting the first cinema.");
+        }
+    	try {
+			ipct.buyTicket(0, 0, "CineColombia", "2018-12-18 15:45", "Inception");
+		} catch (CinemaException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	try {
+			ipct.buyTicket(0, 0, "CineColombia", "2018-12-18 15:45", "Inception");
+			fail("An exception was expected after buying a seat");
+		} catch (CinemaException e) {
+		}
+    	
+    }
+    
+    @Test
+    public void getCinemaByName(){
+    	
+    	InMemoryCinemaPersistence ipct=new InMemoryCinemaPersistence();
+        
+        String functionDate = "2018-12-18 15:45";
+        List<CinemaFunction> functions= new ArrayList<>();
+        CinemaFunction funct1 = new CinemaFunction(new Movie("Inception","Action"),functionDate);
+        CinemaFunction funct2 = new CinemaFunction(new Movie("Anabelle","Terror"),functionDate);
+        functions.add(funct1);
+        functions.add(funct2);
+        Cinema c=new Cinema("CineColombia",functions);
+        
+        try {
+            ipct.saveCinema(c);
+        } catch (CinemaPersistenceException ex) {
+            fail("Cinema persistence failed inserting the first cinema.");
+        }
+        
+        try {
+			Cinema cinemaPrueba = ipct.getCinema("CineColombia");
+		} catch (CinemaPersistenceException e) {
+			fail("Cinema was not found by name");
+		}
         
     }
+    
 }

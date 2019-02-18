@@ -26,6 +26,7 @@ public class CinemaFunction {
     public CinemaFunction(Movie movie, String date){
         this.movie=movie;
         this.date=date;
+        //7x12
         for (int i=0;i<7;i++){
             List<Boolean> row= new ArrayList<>(Arrays.asList(new Boolean[12]));
             Collections.fill(row, Boolean.TRUE);
