@@ -10,6 +10,7 @@ import edu.eci.arsw.cinema.model.CinemaFunction;
 import edu.eci.arsw.cinema.model.Movie;
 import edu.eci.arsw.cinema.persistence.CinemaPersistenceException;
 import edu.eci.arsw.cinema.persistence.CinemaPersitence;
+import edu.eci.arsw.cinema.persistence.FilterException;
 import edu.eci.arsw.cinema.persistence.TypeFiltro;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +24,8 @@ import org.springframework.stereotype.Component;
  *
  * @author 2129082
  */
-@Component("filteredGenered")
-public class FilteredGenered  implements TypeFiltro{
+@Component("filteredByGender")
+public class FilteredByGender  implements TypeFiltro{
     
     private  List<Movie> movies;
  
@@ -34,21 +35,20 @@ public class FilteredGenered  implements TypeFiltro{
         movies = new ArrayList<Movie>();
         try {                     
             for(CinemaFunction cinemaFunctions : cinema.getCinema(cinemasName).getFunctions()){
-                if(cinemaFunctions.getMovie().getGenre().equals(cinemasName)){
+                if(cinemaFunctions.getMovie().getGenre().equals(gender)){
                     movies.add(cinemaFunctions.getMovie());
                 }
             }
             
         } catch (CinemaPersistenceException ex) {
-            Logger.getLogger(FilteredGenered.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FilteredByGender.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return movies;      
+        return movies;    
     }
 
     @Override
-    public List<Movie> filteringByAvailability(CinemaPersitence cinema, String cinemasName, int emptySeats) {
-        movies = new ArrayList<Movie> ();
-        return movies;
+    public List<Movie> filteringByAvailability(CinemaPersitence cinema, String cinemasName, String date,int emptySeats) throws FilterException {
+    	throw new FilterException("filtering by availability is an unsupported"); 
     }
     
 }

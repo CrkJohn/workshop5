@@ -13,8 +13,10 @@ import edu.eci.arsw.cinema.persistence.CinemaPersistenceException;
 import edu.eci.arsw.cinema.persistence.CinemaPersitence;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 import org.springframework.stereotype.Component;
@@ -91,11 +93,11 @@ public class InMemoryCinemaPersistence implements CinemaPersitence{
  
     @Override
     public Set<Cinema> getAllCinemas() {
-        Set<Cinema> cinemasAll = new TreeSet<Cinema>(); 
-        for (Map.Entry<String, Cinema> entry : cinemas.entrySet()) {
-            cinemasAll.add(entry.getValue());
+        Set<Cinema> cinemasAll = new HashSet<Cinema>();
+        for (Map.Entry<String, Cinema> e : cinemas.entrySet()) {
+        	cinemasAll.add(e.getValue());
         }
-        return cinemasAll;  
+        return cinemasAll;
     }
     
 }

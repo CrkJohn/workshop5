@@ -11,6 +11,8 @@ import edu.eci.arsw.cinema.model.Movie;
 import edu.eci.arsw.cinema.persistence.CinemaException;
 import edu.eci.arsw.cinema.persistence.CinemaPersistenceException;
 import edu.eci.arsw.cinema.persistence.CinemaPersitence;
+import edu.eci.arsw.cinema.persistence.FilterException;
+
 import java.util.List;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,16 +32,16 @@ public class CinemaServices {
     CinemaPersitence cps;
     
     @Autowired 
-    @Qualifier("filteredGenered")
+    @Qualifier("filteringByAvailability")
     TypeFiltro filtro;
     
-    public static void main(String[] args){
-        
-        
-    }
-    
     public void addNewCinema(Cinema c){
-        
+        try {
+			cps.saveCinema(c);
+		} catch (CinemaPersistenceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     
     public Set<Cinema> getAllCinemas(){
@@ -66,18 +68,13 @@ public class CinemaServices {
     }
     
     
-    public List<Movie> filteredByGender(CinemaPersitence cinema, String cinemasName , String Date ,String gender){
-        return filtro.filteredByGender(cinema, cinemasName, Date, gender);
-    }       
-    
-    
-    public List<Movie> filteringByAvailability(CinemaPersitence cinema, String cinemasName, int emptySeats ){
-        return filteringByAvailability(cinema, cinemasName, emptySeats);
+    public List<Movie> filteredByGender(CinemaPersitence cinema, String cinemasName , String Date ,String gender) throws FilterException{
+    	return filtro.filteredByGender(cinema, cinemasName, Date, gender);
     }
     
     
-    
- 
-
+    public List<Movie> filteringByAvailability(CinemaPersitence cinema, String cinemasName, String date, int emptySeats ) throws FilterException{
+        return filtro.filteringByAvailability(cinema, cinemasName, date, emptySeats);
+    }
 
 }

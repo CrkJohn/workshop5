@@ -43,11 +43,11 @@ public class CinemaFunction {
         }
     }
     
-    public int getEmptySeat(){
+    public int getEmptySeats(){
         int countEmptySeat = 0;
         for(List<Boolean> listaBoolean  : seats){
             for(Boolean emptySeat  : listaBoolean){
-                if(emptySeat != true){
+                if(emptySeat){
                     countEmptySeat++;
                 }
             }            

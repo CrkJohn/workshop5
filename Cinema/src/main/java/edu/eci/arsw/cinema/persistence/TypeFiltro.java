@@ -24,14 +24,10 @@ public interface TypeFiltro{
      * @param Date
      * @param gender
      * @return 
+     * @throws FilterException 
      */
-    public List<Movie> filteredByGender(CinemaPersitence cinema, String cinemasName , String Date ,String gender);        
-    
-    
-    public List<Movie> filteringByAvailability(CinemaPersitence cinema, String cinemasName, int emptySeats );
-    
-    
-    
-    
-    
+    public List<Movie> filteredByGender(CinemaPersitence cinema, String cinemasName , String Date ,String gender) throws FilterException;        
+
+    public List<Movie> filteringByAvailability(CinemaPersitence cinema, String cinemasName, String date, int emptySeats ) throws FilterException;
+
 }
