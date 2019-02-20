@@ -32,7 +32,7 @@ public class CinemaServices {
     CinemaPersitence cps;
     
     @Autowired 
-    @Qualifier("filteringByAvailability")
+    @Qualifier("filteredByGender")
     TypeFiltro filtro;
     
     public void addNewCinema(Cinema c){
